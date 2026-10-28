@@ -1,0 +1,55 @@
+name: Healthcare App CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Pipeline & Model Unit Tests
+      run: |
+        pytest tests/ -v --junitxml=junit/test-results.xml
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Run Docker Build Check
+      run: |
+        docker build -t healthcare-risk-app:${{ github.sha }} .
+        docker tag healthcare-risk-app:${{ github.sha }} healthcare-risk-app:latest
+
+    # Optional AWS ECR Deployment (Uncomment when AWS Credentials secrets are added in GitHub repo)
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v2
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #     aws-region: us-east-1
+    #
+    # - name: Login to Amazon ECR
+    #   id: login-ecr
+    #   uses: aws-actions/amazon-ecr-login@v1
+    #
+    # - name: Push Docker image to Amazon ECR
+    #   run: |
+    #     docker tag healthcare-risk-app:latest ${{ steps.login-ecr.outputs.registry }}/healthcare-risk-app:latest
+    #     docker push ${{ steps.login-ecr.outputs.registry }}/healthcare-risk-app:latest

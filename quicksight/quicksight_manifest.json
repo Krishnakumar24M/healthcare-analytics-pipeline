@@ -1,0 +1,21 @@
+{
+  "fileLocations": [
+    {
+      "URIs": [
+        "s3://healthcare-analytics-pipeline-306451251863/cleaned-data/patient_telemetry_clean.csv"
+      ]
+    },
+    {
+      "URIPrefixes": [
+        "s3://healthcare-analytics-pipeline-306451251863/cleaned-data/"
+      ]
+    }
+
+  ],
+  "globalUploadSettings": {
+    "format": "CSV",
+    "delimiter": ",",
+    "textqualifier": "\"",
+    "firstRowAsHeader": "true"
+  }
+}

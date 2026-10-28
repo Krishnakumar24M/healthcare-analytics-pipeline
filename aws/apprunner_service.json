@@ -1,0 +1,34 @@
+{
+  "ServiceName": "healthcare-analytics-dashboard",
+  "SourceConfiguration": {
+    "ImageRepository": {
+      "ImageIdentifier": "306451251863.dkr.ecr.us-east-1.amazonaws.com/healthcare-risk-app:latest",
+      "ImageConfiguration": {
+        "Port": "8501",
+        "RuntimeEnvironmentVariables": {
+          "STREAMLIT_SERVER_PORT": "8501",
+          "STREAMLIT_SERVER_ADDRESS": "0.0.0.0",
+          "AWS_DEFAULT_REGION": "us-east-1"
+        }
+      },
+      "ImageRepositoryType": "ECR"
+    },
+    "AutoDeploymentsEnabled": true,
+    "AuthenticationConfiguration": {
+      "AccessRoleArn": "arn:aws:iam::306451251863:role/AppRunnerECRAccessRole"
+    }
+
+  },
+  "InstanceConfiguration": {
+    "Cpu": "1 vCPU",
+    "Memory": "2 GB"
+  },
+  "HealthCheckConfiguration": {
+    "Protocol": "HTTP",
+    "Path": "/_stcore/health",
+    "Interval": 10,
+    "Timeout": 5,
+    "HealthyThreshold": 1,
+    "UnhealthyThreshold": 3
+  }
+}

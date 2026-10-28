@@ -1,0 +1,12 @@
+{
+  "source": ["aws.s3"],
+  "detail-type": ["Object Created"],
+  "detail": {
+    "bucket": {
+      "name": ["healthcare-analytics-pipeline-[your-name]"]
+    },
+    "object": {
+      "key": [{ "prefix": "raw-data/" }]
+    }
+  }
+}
